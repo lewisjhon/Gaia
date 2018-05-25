@@ -1,0 +1,93 @@
+﻿<Controls:MetroWindow x:Class="Gaia.View.SelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"        
+        xmlns:local="clr-namespace:Gaia.View"
+        xmlns:ViewModel ="clr-namespace:Gaia.ViewModel"    
+        mc:Ignorable="d"
+        EnableDWMDropShadow="True"                          
+        Title="유사 이미지 선택" Height="600" Width="800">
+    <Window.DataContext>
+        <ViewModel:SelectWindowViewModel />
+    </Window.DataContext>    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="105"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Left Picture -->
+        <Label Grid.Column="1" Grid.Row="1" Content="{Binding Pic1.Path}" HorizontalAlignment="Center" />
+        <Image Grid.Column="1" Grid.Row="2" Source="{Binding Pic1.Path}" />
+
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="생성날짜:" Width="70" />
+                <Label Content="{Binding Pic1.CreateDate}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="크기:" Width="70" />
+                <Label Content="{Binding Pic1.Size}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="용량:" Width="70" />
+                <Label Content="{Binding Pic1.DiskVolumn}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="확장자:" Width="70" />
+                <Label Content="{Binding Pic1.Extention}" />
+            </StackPanel>
+        </StackPanel>
+        <!-- End Left Picture-->
+
+        <!-- Right Picture -->
+        <Label Grid.Column="3" Grid.Row="1" Content="{Binding Pic2.Path}" HorizontalAlignment="Center" />
+        <Image Grid.Column="3" Grid.Row="2" Source="{Binding Pic2.Path}" />        
+        
+        <StackPanel Grid.Column="3" Grid.Row="3" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="생성날짜:" Width="70" />
+                <Label Content="{Binding Pic2.CreateDate}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="크기:" Width="70" />
+                <Label Content="{Binding Pic2.Size}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="용량:" Width="70" />
+                <Label Content="{Binding Pic2.DiskVolumn}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="확장자:" Width="70" />
+                <Label Content="{Binding Pic2.Extention}" />
+            </StackPanel>
+        </StackPanel>
+        <!-- End Right Picture -->
+
+        <Label Grid.Column="2" Grid.Row="2" Content="{Binding Similarity}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Blue" />
+        <StackPanel Grid.Column="3" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Width="60" Content="왼쪽 삭제" Margin="4 0 4 0" Command="{Binding deleteLeft}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Button Width="60" Content="오른쪽 삭제" Margin="4 0 4 0" Command="{Binding deleteRight}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Button Width="60" Content="모두삭제" Margin="4 0 4 0" Command="{Binding deleteAll}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+            <Button Width="60" Content="모두보관" Margin="4 0 4 0" Command="{Binding SaveAll}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </StackPanel>
+
+    </Grid>
+</Controls:MetroWindow>

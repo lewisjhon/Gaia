@@ -1,0 +1,102 @@
+﻿<Controls:MetroWindow x:Class="Gaia.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:local="clr-namespace:Gaia"
+        xmlns:ViewModel ="clr-namespace:Gaia.ViewModel"              
+        mc:Ignorable="d"
+        EnableDWMDropShadow="True"     
+        Title="Gaia" Height="400" Width="600"  Background="White" >
+    <Window.DataContext>
+        <ViewModel:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="RowStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MetroDataGridRow}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Checked}" Value="True">
+                    <Setter Property="Foreground" Value="Blue" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="400*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="780*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Contents Start -->
+        <DockPanel Grid.Column="1" Grid.Row="1" >
+            <Label>이미지 폴더</Label>
+            <TextBox Controls:TextBoxHelper.Watermark="{Binding WatermarkText}"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"                         
+                     Controls:TextBoxHelper.ButtonCommand="{Binding SearchCommand, Mode=OneWay}"                          
+                     IsReadOnly="True"
+                     IsEnabled="{Binding Enabled}"
+                     Text="{Binding Path}">
+                <TextBox.Style>
+                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SearchMetroTextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Controls:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="Controls:TextBoxHelper.ButtonTemplate" Value="{DynamicResource ChromelessButtonTemplate}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </DockPanel>
+        <Controls:MetroProgressBar Grid.Column="1" Grid.Row="2" IsIndeterminate="True" 
+                                   Visibility="{Binding IsShowLoading, Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+        <DataGrid Grid.Column="1" Grid.Row="3" 
+                  IsReadOnly="True"
+                  AlternationCount="2"
+                  RenderOptions.ClearTypeHint="Enabled"
+                  TextOptions.TextFormattingMode="Display"
+                  HeadersVisibility="Column"
+                  SelectionUnit="FullRow"
+                  AutoGenerateColumns="False"
+                  BorderBrush="Gray" BorderThickness="1"
+                  ItemsSource="{Binding ImageList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  IsEnabled="{Binding ControlEnabled}"
+                  RowStyle="{StaticResource ResourceKey=RowStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding No}" />
+                <DataGridTextColumn Header="CreateDate" Binding="{Binding CreateDate}" />
+                <DataGridTextColumn Header="File" Binding="{Binding Path}" />
+                <DataGridTextColumn Header="ImageSize" Binding="{Binding Size}" />
+                <DataGridTextColumn Header="Extention" Binding="{Binding Extention}" />
+                <DataGridTextColumn Header="FileSize" Binding="{Binding DiskVolumn}" />
+                <DataGridTextColumn Header="Check" Binding="{Binding Checked}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <ProgressBar Grid.Column="1" Grid.Row="4" Minimum="0" Maximum="100" Value="{Binding ProgressValue}" />
+        <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Width="70" Content="중복체크"
+                IsEnabled="{Binding Enabled}"
+                Command="{Binding CheckCommand}"/>
+            <Button Width="70" Content="삭제"
+                IsEnabled="{Binding Enabled}"
+                Command="{Binding DeleteCommand}"/>
+        </StackPanel>
+        
+
+        <!-- Contents End -->
+
+    </Grid>
+    
+</Controls:MetroWindow>
